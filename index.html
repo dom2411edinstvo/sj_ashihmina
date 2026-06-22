@@ -14,9 +14,7 @@
   <title>Ирина Ашихмина — Интеллект-тренер | Super Jump</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -52,19 +50,23 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 1000;
-      background: rgba(14,14,14,0.96);
-      backdrop-filter: blur(12px);
+      /* убран дорогой backdrop-filter: blur() — заменён плотным фоном */
+      background: rgba(14,14,14,0.97);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 40px;
       height: 68px;
-      transition: all 0.3s;
+      /* transition только нужных свойств, не all */
+      transition: height 0.3s, background 0.3s, box-shadow 0.3s;
+      /* GPU-слой заранее */
+      will-change: height;
+      contain: layout style;
     }
     #navbar.scrolled {
       height: 58px;
-      background: rgba(10,10,10,0.99);
+      background: rgba(10,10,10,1);
       box-shadow: 0 4px 30px rgba(0,0,0,0.5);
     }
     .nav-logo {
@@ -104,7 +106,7 @@
       color: var(--text-muted);
       padding: 6px 11px;
       border-radius: 6px;
-      transition: all 0.25s;
+      transition: color 0.2s, background 0.2s;
       letter-spacing: 0.03em;
       white-space: nowrap;
     }
@@ -137,14 +139,14 @@
       height: 2px;
       background: var(--gold);
       border-radius: 2px;
-      transition: all 0.3s;
+      transition: transform 0.3s, opacity 0.3s;
     }
     .mobile-menu {
       display: none;
       position: fixed;
       top: 68px; left: 0; right: 0;
       background: rgba(10,10,10,0.99);
-      backdrop-filter: blur(16px);
+      /* убран backdrop-filter */
       border-bottom: 1px solid var(--border);
       z-index: 999;
       padding: 20px 0;
@@ -177,6 +179,9 @@
       inset: 0;
       background: url('img/1.jpg') center/cover no-repeat;
       z-index: 0;
+      /* GPU-слой для фона */
+      will-change: transform;
+      transform: translateZ(0);
     }
     .hero-overlay {
       position: absolute;
@@ -218,6 +223,7 @@
       background: var(--gold);
       border-radius: 50%;
       animation: pulse-dot 2s infinite;
+      will-change: opacity, transform;
     }
     @keyframes pulse-dot {
       0%, 100% { opacity: 1; transform: scale(1); }
@@ -265,9 +271,10 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.3s;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
       letter-spacing: 0.03em;
       box-shadow: 0 4px 24px rgba(245,200,66,0.3);
+      will-change: transform;
     }
     .btn-primary:hover {
       transform: translateY(-2px);
@@ -286,7 +293,8 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.3s;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+      will-change: transform;
     }
     .btn-outline:hover {
       background: rgba(245,200,66,0.1);
@@ -335,7 +343,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      backdrop-filter: blur(8px);
+      /* убран backdrop-filter: blur() */
     }
     .hero-card-icon {
       font-size: 1.6rem;
@@ -501,7 +509,7 @@
       padding: 36px 30px;
       text-align: center;
       border: 1px solid var(--border);
-      transition: background 0.3s;
+      transition: background 0.25s;
     }
     .stat-item:first-child { border-radius: 16px 0 0 16px; }
     .stat-item:last-child { border-radius: 0 16px 16px 0; }
@@ -533,8 +541,9 @@
       border-radius: 16px;
       overflow: hidden;
       cursor: pointer;
-      transition: all 0.35s;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
       position: relative;
+      will-change: transform;
     }
     .video-card:hover {
       transform: translateY(-6px);
@@ -567,7 +576,8 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-      transition: all 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s;
+      will-change: transform;
     }
     .video-card:hover .play-btn {
       transform: translate(-50%, -50%) scale(1.12);
@@ -608,10 +618,11 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 28px 24px;
-      transition: all 0.35s;
+      transition: transform 0.3s, border-color 0.3s, background 0.3s, box-shadow 0.3s;
       cursor: default;
       position: relative;
       overflow: hidden;
+      will-change: transform;
     }
     .pearl-card::before {
       content: '';
@@ -621,6 +632,7 @@
       background: linear-gradient(90deg, var(--gold), var(--gold-dark));
       transform: scaleX(0);
       transition: transform 0.3s;
+      transform-origin: left;
     }
     .pearl-card:hover::before { transform: scaleX(1); }
     .pearl-card:hover {
@@ -698,7 +710,8 @@
       border-radius: 14px;
       padding: 28px 22px;
       text-align: center;
-      transition: all 0.3s;
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+      will-change: transform;
     }
     .method-card:hover {
       border-color: rgba(245,200,66,0.35);
@@ -771,7 +784,8 @@
       border-radius: 16px;
       padding: 36px 28px;
       text-align: center;
-      transition: all 0.35s;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s, background 0.3s;
+      will-change: transform;
     }
     .adv-card:hover {
       transform: translateY(-6px);
@@ -842,7 +856,7 @@
       border-radius: 12px;
       padding: 16px 16px;
       cursor: pointer;
-      transition: all 0.25s;
+      transition: border-color 0.2s, background 0.2s;
       display: flex;
       align-items: flex-start;
       gap: 12px;
@@ -865,178 +879,131 @@
       margin-top: 1px;
     }
     .test-result {
-      background: rgba(245,200,66,0.06);
-      border: 1px solid rgba(245,200,66,0.25);
-      border-radius: 14px;
-      padding: 26px;
-      text-align: center;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 28px;
+      margin-top: 20px;
     }
-    .result-label {
-      display: inline-block;
-      font-size: 0.75rem;
+    .test-result-label {
+      font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
-    .result-title {
-      font-size: 1.3rem;
-      font-weight: 700;
+    .test-result h3 {
+      font-size: 1.2rem;
       color: #fff;
       margin-bottom: 10px;
     }
-    .result-text {
+    .test-result p {
       font-size: 0.9rem;
       color: var(--text-muted);
       line-height: 1.7;
-      margin-bottom: 18px;
     }
 
     /* ====== FORMATS ====== */
     .formats-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
     .format-card {
       background: var(--bg-card2);
-      border: 1.5px solid var(--border);
-      border-radius: 18px;
-      padding: 36px 32px;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
-      transition: all 0.35s;
-      position: relative;
+      will-change: transform;
     }
-    .format-card.popular::after {
-      content: 'Популярный';
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      background: var(--gold);
-      color: #0e0e0e;
-      font-weight: 700;
-      font-size: 0.72rem;
-      padding: 4px 12px;
-      border-radius: 50px;
-    }
-    .format-card:hover, .format-card.active {
-      border-color: rgba(245,200,66,0.5);
-      background: rgba(245,200,66,0.04);
+    .format-card:hover,
+    .format-card.active {
+      border-color: var(--gold);
+      transform: translateY(-4px);
       box-shadow: 0 16px 40px rgba(0,0,0,0.3);
     }
+    .format-card.active {
+      background: rgba(245,200,66,0.06);
+    }
     .format-icon {
-      font-size: 2.4rem;
+      font-size: 2.2rem;
       margin-bottom: 16px;
       display: block;
     }
     .format-card h3 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: var(--gold);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .format-card p {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      line-height: 1.75;
-      margin-bottom: 20px;
+      line-height: 1.7;
+      margin-bottom: 16px;
     }
-    .format-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .format-features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 0.87rem;
-      color: var(--text-main);
-    }
-    .format-features li::before {
-      content: '✦';
+    .format-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
       color: var(--gold);
-      font-size: 0.7rem;
-      margin-top: 4px;
-      flex-shrink: 0;
     }
 
-    /* ====== RESULTS / REVIEWS ====== */
-    .reviews-grid {
+    /* ====== RESULTS ====== */
+    .results-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
-    .review-card {
+    .result-card {
       background: var(--bg-card2);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 28px 26px;
-      transition: all 0.3s;
+      padding: 28px 24px;
+      transition: transform 0.3s, border-color 0.3s;
+      will-change: transform;
     }
-    .review-card:hover {
-      border-color: rgba(245,200,66,0.3);
+    .result-card:hover {
       transform: translateY(-4px);
+      border-color: rgba(245,200,66,0.3);
     }
-    .review-stars {
+    .result-card .stars {
       color: var(--gold);
-      font-size: 1rem;
       margin-bottom: 14px;
+      font-size: 1rem;
     }
-    .review-text {
-      font-size: 0.92rem;
+    .result-card p {
+      font-size: 0.9rem;
       color: var(--text-muted);
-      line-height: 1.8;
-      margin-bottom: 20px;
+      line-height: 1.7;
+      margin-bottom: 14px;
       font-style: italic;
     }
-    .review-author {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .review-av {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .result-card .author {
+      font-size: 0.82rem;
+      color: var(--gold);
       font-weight: 700;
-      font-size: 0.85rem;
-      color: #0e0e0e;
-      flex-shrink: 0;
-    }
-    .review-name {
-      font-weight: 700;
-      font-size: 0.92rem;
-      color: #fff;
-    }
-    .review-role {
-      font-size: 0.78rem;
-      color: var(--text-muted);
     }
 
     /* ====== CERTIFICATES ====== */
     .certs-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      gap: 24px;
     }
     .cert-card {
       background: var(--bg-card2);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      will-change: transform;
     }
     .cert-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-6px);
       border-color: rgba(245,200,66,0.4);
-      box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
     }
     .cert-img {
       width: 100%;
@@ -1045,87 +1012,11 @@
       display: block;
     }
     .cert-label {
-      padding: 12px 16px;
+      padding: 14px 18px;
       font-size: 0.82rem;
       color: var(--text-muted);
       text-align: center;
-    }
-
-    /* ====== AUDIOBOOK ====== */
-    .audiobook-layout {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 60px;
-      align-items: center;
-    }
-    .audiobook-cover h2 {
-      font-size: clamp(1.8rem, 3vw, 2.4rem);
-      color: #fff;
-      margin-bottom: 12px;
-      line-height: 1.25;
-    }
-    .audiobook-meta {
-      font-size: 0.88rem;
-      color: var(--gold);
       font-weight: 600;
-      margin-bottom: 20px;
-    }
-    .audiobook-desc {
-      color: var(--text-muted);
-      line-height: 1.8;
-      margin-bottom: 24px;
-      font-size: 1rem;
-    }
-    .audiobook-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 28px;
-    }
-    .audiobook-features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 0.93rem;
-      color: var(--text-main);
-    }
-    .audiobook-features li::before {
-      content: '✦';
-      color: var(--gold);
-      font-size: 0.7rem;
-      margin-top: 5px;
-      flex-shrink: 0;
-    }
-
-    /* ====== AUDIOBOOK PHOTO ====== */
-    .audiobook-photo-wrap {
-      position: relative;
-      flex-shrink: 0;
-      width: 280px;
-    }
-    .audiobook-photo {
-      width: 100%;
-      border-radius: 20px;
-      object-fit: cover;
-      aspect-ratio: 3/4;
-      display: block;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      border: 1px solid rgba(245,200,66,0.15);
-    }
-    .audiobook-photo-badge {
-      position: absolute;
-      bottom: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      color: #0e0e0e;
-      font-weight: 700;
-      font-size: 0.78rem;
-      padding: 8px 18px;
-      border-radius: 50px;
-      white-space: nowrap;
-      box-shadow: 0 6px 24px rgba(245,200,66,0.4);
     }
 
     /* ====== SIGNUP ====== */
@@ -1138,74 +1029,70 @@
     .signup-form {
       background: var(--bg-card2);
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 16px;
       padding: 36px 32px;
     }
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     .form-group label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--text-muted);
       margin-bottom: 8px;
-      letter-spacing: 0.04em;
     }
     .form-group input {
       width: 100%;
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.06);
       border: 1.5px solid var(--border);
       border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 0.92rem;
+      padding: 13px 16px;
       color: var(--text-main);
+      font-size: 0.95rem;
       font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
       outline: none;
-      transition: border-color 0.25s;
     }
     .form-group input:focus {
-      border-color: rgba(245,200,66,0.5);
+      border-color: var(--gold);
     }
     .form-group input::placeholder {
       color: rgba(176,168,128,0.5);
     }
     .focus-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-wrap: wrap;
       gap: 8px;
     }
     .focus-opt {
-      background: var(--bg-dark);
+      background: rgba(245,200,66,0.06);
       border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 0.83rem;
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
     }
     .focus-opt:hover {
-      border-color: rgba(245,200,66,0.3);
-      color: var(--text-main);
+      border-color: rgba(245,200,66,0.4);
     }
     .focus-opt.active {
       border-color: var(--gold);
-      background: rgba(245,200,66,0.08);
+      background: rgba(245,200,66,0.12);
       color: var(--gold);
     }
     .signup-info {
-      padding: 10px 0;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 32px;
     }
     .trainer-profile {
       display: flex;
       align-items: center;
       gap: 14px;
-      background: rgba(245,200,66,0.06);
-      border: 1px solid rgba(245,200,66,0.2);
-      border-radius: 12px;
-      padding: 16px 20px;
     }
     .trainer-av {
       width: 48px;
@@ -1215,8 +1102,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'Playfair Display', serif;
       font-weight: 900;
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #0e0e0e;
       flex-shrink: 0;
     }
@@ -1224,7 +1112,6 @@
       display: block;
       font-size: 0.95rem;
       color: #fff;
-      font-weight: 700;
     }
     .trainer-name span {
       font-size: 0.78rem;
@@ -1238,13 +1125,9 @@
       text-align: center;
       padding: 0 40px;
     }
-    .cta-section h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 20px;
-    }
     .cta-section p {
-      font-size: 1rem;
       color: var(--text-muted);
+      font-size: 1.05rem;
       line-height: 1.8;
       margin-bottom: 36px;
     }
@@ -1264,16 +1147,16 @@
     .contact-card {
       background: var(--bg-card2);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px 24px;
+      border-radius: 14px;
+      padding: 28px 22px;
       display: flex;
       align-items: center;
       gap: 16px;
-      transition: all 0.3s;
-      text-decoration: none;
+      transition: border-color 0.25s, transform 0.25s, background 0.25s;
+      will-change: transform;
     }
     .contact-card:hover {
-      border-color: rgba(245,200,66,0.4);
+      border-color: rgba(245,200,66,0.35);
       transform: translateY(-4px);
       background: rgba(245,200,66,0.04);
     }
@@ -1286,7 +1169,6 @@
       font-size: 0.95rem;
       color: #fff;
       font-weight: 700;
-      margin-bottom: 4px;
     }
     .contact-info span {
       font-size: 0.8rem;
@@ -1297,139 +1179,136 @@
     footer {
       background: #080808;
       border-top: 1px solid var(--border);
+      padding: 60px 0 0;
     }
     .footer-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 60px 40px 30px;
+      padding: 0 40px;
     }
     .footer-top {
       display: grid;
-      grid-template-columns: 1fr 2fr 1fr;
-      gap: 60px;
-      margin-bottom: 48px;
+      grid-template-columns: 1.3fr 2fr 1fr;
+      gap: 40px;
+      padding-bottom: 40px;
     }
     .footer-brand p {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      line-height: 1.8;
+      line-height: 1.7;
+      margin-top: 8px;
     }
     .footer-links-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
+      gap: 24px;
     }
     .footer-col h5 {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
       color: var(--gold);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .footer-col ul {
       list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
     }
-    .footer-col ul li a {
-      font-size: 0.88rem;
+    .footer-col li {
+      margin-bottom: 8px;
+    }
+    .footer-col a {
+      font-size: 0.85rem;
       color: var(--text-muted);
       transition: color 0.2s;
     }
-    .footer-col ul li a:hover { color: var(--gold); }
-    .footer-contacts {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .footer-col a:hover {
+      color: var(--gold);
     }
     .footer-contacts h5 {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
       color: var(--gold);
-      margin-bottom: 6px;
+      margin-bottom: 14px;
     }
     .footer-contact-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
+      margin-bottom: 10px;
       transition: color 0.2s;
-      text-decoration: none;
     }
-    .footer-contact-item:hover { color: var(--gold); }
+    .footer-contact-item:hover {
+      color: var(--gold);
+    }
     .footer-bottom {
       border-top: 1px solid var(--border);
-      padding-top: 24px;
+      padding: 20px 0;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .footer-bottom span {
       font-size: 0.8rem;
       color: var(--text-muted);
+      opacity: 0.7;
     }
 
     /* ====== BACK TO TOP ====== */
     #backTop {
       position: fixed;
-      bottom: 32px;
-      right: 32px;
+      bottom: 30px;
+      right: 30px;
       width: 46px;
       height: 46px;
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: #0e0e0e;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
-      color: #0e0e0e;
-      font-weight: 700;
+      font-size: 1.3rem;
+      font-weight: 900;
       cursor: pointer;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s;
-      z-index: 500;
-      box-shadow: 0 4px 20px rgba(245,200,66,0.4);
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+      z-index: 900;
+      box-shadow: 0 4px 20px rgba(245,200,66,0.3);
     }
     #backTop.visible {
       opacity: 1;
-      transform: translateY(0);
+      visibility: visible;
+    }
+    #backTop:hover {
+      transform: translateY(-4px);
     }
 
     /* ====== NOTIFICATION ====== */
     .notif {
       position: fixed;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
+      top: 80px;
+      right: 30px;
       background: var(--bg-card2);
-      border: 1px solid rgba(245,200,66,0.3);
-      border-radius: 12px;
-      padding: 16px 28px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      opacity: 0;
-      transition: all 0.4s;
-      z-index: 2000;
-      min-width: 260px;
-      text-align: center;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      border: 1px solid var(--gold);
+      border-radius: 14px;
+      padding: 18px 24px;
+      z-index: 1100;
+      transform: translateX(calc(100% + 40px));
+      transition: transform 0.4s;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      max-width: 320px;
     }
     .notif.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(0);
     }
-    .notif strong { color: var(--gold); font-size: 0.95rem; }
-    .notif span { color: var(--text-muted); font-size: 0.82rem; }
+    .notif strong {
+      display: block;
+      color: var(--gold);
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .notif span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
 
     /* ====== VIDEO MODAL ====== */
     .video-modal {
@@ -1442,7 +1321,9 @@
       justify-content: center;
       padding: 20px;
     }
-    .video-modal.open { display: flex; }
+    .video-modal.open {
+      display: flex;
+    }
     .modal-inner {
       position: relative;
       width: 100%;
@@ -1464,25 +1345,29 @@
       color: #fff;
       transition: background 0.2s;
     }
-    .modal-close:hover { background: rgba(255,255,255,0.2); }
+    .modal-close:hover {
+      background: rgba(255,255,255,0.2);
+    }
     .modal-video {
       position: relative;
-      aspect-ratio: 16/9;
+      padding-bottom: 56.25%;
       border-radius: 14px;
       overflow: hidden;
       background: #000;
     }
     .modal-video iframe {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       border: none;
     }
 
-    /* ====== FADE-UP ANIMATION ====== */
+    /* ====== FADE ANIMATION ====== */
     .fade-up {
       opacity: 0;
       transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.6s, transform 0.6s;
     }
     .fade-up.visible {
       opacity: 1;
@@ -1491,108 +1376,53 @@
 
     /* ====== RESPONSIVE ====== */
     @media (max-width: 1024px) {
+      .hero-content { grid-template-columns: 1fr; gap: 40px; }
+      .hero-right { align-items: flex-start; }
+      .hero-cards { max-width: 100%; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-grid .about-photo-wrap { max-width: 320px; }
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:first-child { border-radius: 16px 0 0 0; }
+      .stat-item:nth-child(2) { border-radius: 0 16px 0 0; }
+      .stat-item:nth-child(3) { border-radius: 0 0 0 16px; }
+      .stat-item:last-child { border-radius: 0 0 16px 0; }
+      .videos-grid { grid-template-columns: repeat(2, 1fr); }
       .pearls-grid { grid-template-columns: repeat(2, 1fr); }
       .method-cards { grid-template-columns: repeat(2, 1fr); }
       .adv-grid { grid-template-columns: repeat(2, 1fr); }
-      .stats-strip { grid-template-columns: repeat(2, 1fr); }
-      .stat-item:first-child { border-radius: 16px 0 0 0; }
-      .stat-item:last-child { border-radius: 0 16px 16px 0; }
+      .test-layout { grid-template-columns: 1fr; }
+      .formats-grid { grid-template-columns: 1fr; }
+      .results-grid { grid-template-columns: repeat(2, 1fr); }
       .certs-grid { grid-template-columns: repeat(2, 1fr); }
+      .signup-layout { grid-template-columns: 1fr; }
       .contacts-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
-      .footer-contacts { grid-column: 1 / -1; }
-      .about-grid { grid-template-columns: 280px 1fr; gap: 40px; }
-      .audiobook-layout { grid-template-columns: 1fr 220px; gap: 40px; }
-      .audiobook-photo-wrap { width: 220px; }
-    }
-
-    @media (max-width: 768px) {
-      #navbar { padding: 0 20px; }
+      .footer-top { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .burger { display: flex; }
-
-      .hero-content {
-        grid-template-columns: 1fr;
-        padding: 60px 20px;
-        gap: 40px;
-      }
-      .hero-right { align-items: flex-start; }
-      .hero-cards { max-width: 100%; }
-
+    }
+    @media (max-width: 640px) {
+      #navbar { padding: 0 20px; }
       section { padding: 60px 20px; }
-      .section-wrap { padding: 60px 0; }
       .section-inner { padding: 0 20px; }
-
-      .about-grid {
-        grid-template-columns: 1fr;
-        gap: 50px;
-      }
-      .about-photo-wrap { max-width: 300px; margin: 0 auto; }
-
-      .stats-strip { grid-template-columns: repeat(2, 1fr); }
-
+      .section-wrap { padding: 60px 0; }
+      .hero-content { padding: 60px 20px; }
+      .stats-strip { grid-template-columns: 1fr 1fr; }
       .videos-grid { grid-template-columns: 1fr; }
-
       .pearls-grid { grid-template-columns: 1fr; }
-
       .method-cards { grid-template-columns: 1fr; }
       .who-grid { grid-template-columns: 1fr; }
-
       .adv-grid { grid-template-columns: 1fr; }
-
-      .test-layout { grid-template-columns: 1fr; gap: 40px; }
       .test-cards { grid-template-columns: 1fr; }
-
-      .formats-grid { grid-template-columns: 1fr; }
-
-      .reviews-grid { grid-template-columns: 1fr; }
-
-      .certs-grid { grid-template-columns: repeat(2, 1fr); }
-
-      /* AUDIOBOOK mobile */
-      .audiobook-layout {
-        grid-template-columns: 1fr;
-        gap: 36px;
-      }
-      .audiobook-photo-wrap {
-        width: 100%;
-        max-width: 240px;
-        margin: 0 auto;
-      }
-
-      .signup-layout { grid-template-columns: 1fr; gap: 32px; }
-
-      .contacts-grid { grid-template-columns: 1fr; }
-
-      .footer-top { grid-template-columns: 1fr; gap: 32px; }
-      .footer-links-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-inner { padding: 40px 20px 24px; }
-
-      .cta-section { padding: 0 20px; }
-      .cta-btns { flex-direction: column; align-items: center; }
-
-      .who-for { padding: 24px 20px; }
-
-      .divider-line { padding: 0 20px; }
-
-      #backTop { bottom: 20px; right: 20px; }
-    }
-
-    @media (max-width: 480px) {
-      .hero-left h1 { font-size: 2.2rem; }
-      .hero-btns { flex-direction: column; }
-      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
-      .focus-options { grid-template-columns: 1fr; }
+      .results-grid { grid-template-columns: 1fr; }
       .certs-grid { grid-template-columns: 1fr; }
-      .stats-strip { grid-template-columns: 1fr; }
-      .stat-item:first-child { border-radius: 16px 16px 0 0; }
-      .stat-item:last-child { border-radius: 0 0 16px 16px; }
+      .contacts-grid { grid-template-columns: 1fr; }
       .footer-links-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      .audiobook-photo-wrap { max-width: 200px; }
+      .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
+      .signup-info-inner { flex-direction: column !important; }
+      .signup-info-inner .book-img { width: 100% !important; max-width: 260px !important; margin: 0 auto !important; }
     }
-
   </style>
+
 </head>
 
 <body>
@@ -1607,10 +1437,9 @@
     <li><a href="#about">Обо мне</a></li>
     <li><a href="#videos">Видео</a></li>
     <li><a href="#method">Методика</a></li>
-    <li><a href="#pearls">8 упражнений</a></li>
-    <li><a href="#test">Тест</a></li>
-    <li><a href="#results">Отзывы</a></li>
-    <li><a href="#audiobook">Аудиокнига</a></li>
+    <li><a href="#pearls">8 жемчужин</a></li>
+    <li><a href="#test">Тест энергии</a></li>
+    <li><a href="#certs">Сертификаты</a></li>
     <li><a href="#contacts">Контакты</a></li>
     <li><a href="#signup" class="nav-cta">Записаться</a></li>
   </ul>
@@ -1619,17 +1448,15 @@
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about" onclick="closeMobile()">Обо мне</a>
   <a href="#videos" onclick="closeMobile()">Видео</a>
   <a href="#method" onclick="closeMobile()">Методика</a>
-  <a href="#pearls" onclick="closeMobile()">8 упражнений</a>
+  <a href="#pearls" onclick="closeMobile()">8 жемчужин</a>
   <a href="#test" onclick="closeMobile()">Тест энергии</a>
-  <a href="#results" onclick="closeMobile()">Отзывы</a>
-  <a href="#audiobook" onclick="closeMobile()">Аудиокнига</a>
+  <a href="#certs" onclick="closeMobile()">Сертификаты</a>
   <a href="#contacts" onclick="closeMobile()">Контакты</a>
-  <a href="#signup" onclick="closeMobile()" style="color:var(--gold);font-weight:700;">Записаться</a>
+  <a href="#signup" onclick="closeMobile()">Записаться</a>
 </div>
 
 <!-- ====== HERO ====== -->
@@ -1639,23 +1466,31 @@
   <div class="hero-content">
     <div class="hero-left">
       <div class="hero-badge">Super Jump · Интеллект-тренер</div>
-      <h1>Ирина<br><span>Ашихмина</span></h1>
-      <p class="hero-subtitle">Восстановлю вашу энергию. Уберу стресс. Помогу вырасти в доходах.</p>
-      <p class="hero-desc">Онлайн-интенсивы по методике Super Jump — для тех, кто устал быть уставшим. Результат — уже с первых дней практики.</p>
+      <h1>Ирина Ашихмина<span>Управление энергией</span></h1>
+      <p class="hero-subtitle">Сертифицированный интеллект-тренер международной системы Super Jump</p>
+      <p class="hero-desc">Восстановите жизненную энергию, избавьтесь от стресса и выгорания за 10 дней практики. Научитесь управлять своим состоянием — и ваша жизнь изменится.</p>
       <div class="hero-btns">
-        <button class="btn-primary" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">
-          Записаться на разбор
-        </button>
-        <button class="btn-outline" onclick="openVideo('https://www.youtube.com/embed/0xAHM8nLi7I')">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <button class="btn-primary" onclick="openVideo('https://www.youtube.com/embed/0xAHM8nLi7I')">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#0e0e0e;flex-shrink:0"><path d="M8 5v14l11-7z"/></svg>
           Смотреть презентацию
         </button>
+        <a href="#signup" class="btn-outline" style="text-decoration:none;">
+          Записаться на разбор
+        </a>
       </div>
       <div class="hero-stats">
-        <div class="hero-stat"><strong>500+</strong><span>Учеников</span></div>
-        <div class="hero-stat"><strong>20+</strong><span>Лет опыта</span></div>
-        <div class="hero-stat"><strong>10</strong><span>Дней до результата</span></div>
-        <div class="hero-stat"><strong>100%</strong><span>Онлайн</span></div>
+        <div class="hero-stat">
+          <strong>500+</strong>
+          <span>Участников</span>
+        </div>
+        <div class="hero-stat">
+          <strong>20+</strong>
+          <span>Лет опыта</span>
+        </div>
+        <div class="hero-stat">
+          <strong>10</strong>
+          <span>Дней интенсив</span>
+        </div>
       </div>
     </div>
     <div class="hero-right">
@@ -1663,22 +1498,22 @@
         <div class="hero-card">
           <div class="hero-card-icon">⚡</div>
           <div>
-            <strong>Восстановление энергии</strong>
-            <span>Хроническая усталость уходит за 2–3 дня</span>
+            <strong>Энергия</strong>
+            <span>Восстановление за 10 дней</span>
           </div>
         </div>
         <div class="hero-card">
           <div class="hero-card-icon">🧠</div>
           <div>
-            <strong>Ментальная устойчивость</strong>
-            <span>Тревога и прокрутка мыслей — в прошлом</span>
+            <strong>Ясность мышления</strong>
+            <span>Фокус и концентрация</span>
           </div>
         </div>
         <div class="hero-card">
-          <div class="hero-card-icon">📈</div>
+          <div class="hero-card-icon">🛡️</div>
           <div>
-            <strong>Рост доходов</strong>
-            <span>Ресурсное состояние = больше возможностей</span>
+            <strong>Стрессоустойчивость</strong>
+            <span>Внутренний щит</span>
           </div>
         </div>
       </div>
@@ -1687,307 +1522,342 @@
 </section>
 
 <!-- ====== ABOUT ====== -->
-<div class="section-wrap" id="about">
+<div class="section-wrap alt" id="about">
   <div class="section-inner">
+    <div class="section-header fade-up">
+      <div class="section-label">Обо мне</div>
+    </div>
     <div class="about-grid">
       <div class="about-photo-wrap fade-up">
-        <img src="img/1.jpg" alt="Ирина Ашихмина" class="about-photo">
-        <div class="about-photo-badge">Ирина Ашихмина · Super Jump</div>
+        <img src="img/2.jpg" alt="Ирина Ашихмина" class="about-photo">
+        <div class="about-photo-badge">Интеллект-тренер Super Jump</div>
       </div>
       <div class="about-text fade-up">
-        <div class="section-label">Обо мне</div>
         <h2>Я Ирина Ашихмина —<br>ваш тренер по управлению энергией</h2>
         <p>Как сертифицированный интеллект-тренер международной системы Super Jump, я обучаю практической системе ментальных упражнений, которые занимают минимум времени, но дают колоссальный прирост жизненной энергии.</p>
         <p>Работаю с людьми, которые устали быть уставшими — теми, кто хочет думать ясно, чувствовать себя сильным и двигаться к целям без ощущения внутреннего опустошения.</p>
         <ul class="about-list">
-          <li><span class="icon">⚡</span><span>Восстанавливаю энергию: хроническая усталость и апатия уходят в первые дни практики</span></li>
-          <li><span class="icon">🧠</span><span>Ментальная гигиена: вы перестаёте тонуть в тревожных мыслях и прокрутке негатива</span></li>
-          <li><span class="icon">🛡️</span><span>Стрессоустойчивость: формируется надёжный внутренний щит против любого внешнего давления</span></li>
-          <li><span class="icon">🎯</span><span>Ясность фокуса: цели становятся чёткими — растут концентрация и доходы</span></li>
+          <li><span class="icon">⚡</span> Восстанавливаю энергию: хроническая усталость и апатия уходят в первые дни практики</li>
+          <li><span class="icon">🧠</span> Ментальная гигиена: вы перестаёте тонуть в тревожных мыслях и прокрутке негатива</li>
+          <li><span class="icon">🛡️</span> Стрессоустойчивость: формируется надёжный внутренний щит против любого внешнего давления</li>
+          <li><span class="icon">🎯</span> Ясность фокуса: цели становятся чёткими — растут концентрация и доходы</li>
         </ul>
-        <a href="#contacts" class="btn-outline">Задать вопрос</a>
+        <a href="#signup" class="btn-primary" style="text-decoration:none;display:inline-flex;margin-top:10px;">Задать вопрос</a>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ====== STATS ====== -->
-<div class="section-wrap alt">
+<div class="section-wrap">
   <div class="section-inner">
     <div class="stats-strip fade-up">
       <div class="stat-item">
-        <span class="stat-number">500+</span>
-        <span class="stat-label">Учеников прошли интенсив</span>
+        <span class="stat-number" id="stat0">0</span>
+        <span class="stat-label">Участников прошли интенсив</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">20+</span>
-        <span class="stat-label">Лет личного опыта практики</span>
+        <span class="stat-number" id="stat1">0</span>
+        <span class="stat-label">Лет опыта в практике</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">10</span>
+        <span class="stat-number" id="stat2">0</span>
         <span class="stat-label">Дней до первых результатов</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">100%</span>
-        <span class="stat-label">Онлайн, из любой точки мира</span>
+        <span class="stat-number" id="stat3">0</span>
+        <span class="stat-label">Онлайн-формат обучения</span>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ====== DIVIDER ====== -->
+<div class="divider"><div class="divider-line">✦</div></div>
+
 <!-- ====== VIDEOS ====== -->
-<div class="section-wrap" id="videos">
+<div class="section-wrap alt" id="videos">
   <div class="section-inner">
     <div class="section-header fade-up">
       <div class="section-label">Видеоматериалы</div>
-      <h2 class="section-title">Посмотрите — и убедитесь сами</h2>
-      <p class="section-desc">Реальные эфиры и интервью о методике Super Jump, результатах учеников и природе человеческой энергии</p>
+      <h2 class="section-title">Посмотрите и убедитесь сами</h2>
+      <p class="section-desc">Видеопрезентации методики Super Jump — реальные истории и практические результаты</p>
     </div>
     <div class="videos-grid">
       <div class="video-card fade-up" onclick="openVideo('https://www.youtube.com/embed/0xAHM8nLi7I')">
         <div class="video-thumb">
-          <img src="https://img.youtube.com/vi/0xAHM8nLi7I/hqdefault.jpg" alt="Презентация Super Jump">
+          <img src="https://img.youtube.com/vi/0xAHM8nLi7I/maxresdefault.jpg" alt="Презентация Super Jump">
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         </div>
         <div class="video-info">
           <div class="video-tag">Презентация</div>
-          <h4>Что такое Super Jump</h4>
-          <p>Полная презентация методики и системы тренировок</p>
+          <h4>Super Jump — презентация методики</h4>
+          <p>Узнайте, как работает система интеллект-тренировок</p>
         </div>
       </div>
       <div class="video-card fade-up" onclick="openVideo('https://www.youtube.com/embed/N9FL7UrBUWk')">
         <div class="video-thumb">
-          <img src="https://img.youtube.com/vi/N9FL7UrBUWk/hqdefault.jpg" alt="О бизнесе Super Jump">
+          <img src="https://img.youtube.com/vi/N9FL7UrBUWk/maxresdefault.jpg" alt="О бизнесе">
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         </div>
         <div class="video-info">
           <div class="video-tag">Бизнес</div>
-          <h4>О бизнесе с Super Jump</h4>
-          <p>Как стать тренером и строить доход на методике</p>
+          <h4>Super Jump и бизнес-возможности</h4>
+          <p>Как методика помогает расти в доходах и эффективности</p>
         </div>
       </div>
       <div class="video-card fade-up" onclick="openVideo('https://www.youtube.com/embed/bQZk-GVjc2E')">
         <div class="video-thumb">
-          <img src="https://img.youtube.com/vi/bQZk-GVjc2E/hqdefault.jpg" alt="Компас энергии">
+          <img src="https://img.youtube.com/vi/bQZk-GVjc2E/maxresdefault.jpg" alt="Компас энергии">
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         </div>
         <div class="video-info">
           <div class="video-tag">Практика</div>
           <h4>Компас энергии</h4>
-          <p>Как определить уровень энергии и что с этим делать</p>
+          <p>Диагностика вашего энергетического состояния</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ====== DIVIDER ====== -->
+<div class="divider"><div class="divider-line">✦</div></div>
+
 <!-- ====== 8 PEARLS ====== -->
-<div class="section-wrap alt" id="pearls">
+<div class="section-wrap" id="pearls">
   <div class="section-inner">
     <div class="section-header fade-up">
       <div class="section-label">8 жемчужин</div>
-      <h2 class="section-title">Восемь упражнений,<br>которые меняют всё</h2>
-      <p class="section-desc">Каждое упражнение — отдельный ключ к конкретному уровню вашей энергии. Система работает как единый механизм</p>
+      <h2 class="section-title">8 упражнений Super Jump</h2>
+      <p class="section-desc">Каждое упражнение — это жемчужина, которая работает с конкретной сферой вашей жизни</p>
     </div>
     <div class="pearls-grid">
       <div class="pearl-card fade-up">
-        <div class="pearl-num">01 · Жемчужина</div>
+        <div class="pearl-num">Жемчужина 1</div>
         <span class="pearl-emoji">🌅</span>
-        <h3>Утренний запуск</h3>
-        <p>Активация мозга и тела за 7 минут — без кофе и будильника на «ещё 5 минут»</p>
-        <span class="pearl-tag">Энергия</span>
+        <h3>Энергетический старт</h3>
+        <p>Утренняя практика для запуска энергии на весь день</p>
+        <span class="pearl-tag">Утро · 5 мин</span>
       </div>
       <div class="pearl-card fade-up">
-        <div class="pearl-num">02 · Жемчужина</div>
+        <div class="pearl-num">Жемчужина 2</div>
         <span class="pearl-emoji">🧘</span>
-        <h3>Очистка сознания</h3>
-        <p>Техника обнуления ментального шума — мысли становятся чистыми и направленными</p>
-        <span class="pearl-tag">Фокус</span>
+        <h3>Ментальная очистка</h3>
+        <p>Освобождение от негативных мыслей и тревоги</p>
+        <span class="pearl-tag">Медитация · 7 мин</span>
       </div>
       <div class="pearl-card fade-up">
-        <div class="pearl-num">03 · Жемчужина</div>
-        <span class="pearl-emoji">💎</span>
-        <h3>Кристаллизация цели</h3>
-        <p>Превращаем размытые желания в чёткий вектор, который тянет вперёд автоматически</p>
-        <span class="pearl-tag">Цели</span>
+        <div class="pearl-num">Жемчужина 3</div>
+        <span class="pearl-emoji">💪</span>
+        <h3>Внутренний стержень</h3>
+        <p>Укрепление уверенности и решительности</p>
+        <span class="pearl-tag">Сила · 5 мин</span>
       </div>
       <div class="pearl-card fade-up">
-        <div class="pearl-num">04 · Жемчужина</div>
-        <span class="pearl-emoji">🛡️</span>
-        <h3>Щит от стресса</h3>
-        <p>Формируем внутреннюю защиту — раздражители перестают выбивать из ресурса</p>
-        <span class="pearl-tag">Стресс</span>
+        <div class="pearl-num">Жемчужина 4</div>
+        <span class="pearl-emoji">🎯</span>
+        <h3>Фокус намерения</h3>
+        <p>Концентрация на целях и приоритетах</p>
+        <span class="pearl-tag">Фокус · 5 мин</span>
       </div>
       <div class="pearl-card fade-up">
-        <div class="pearl-num">05 · Жемчужина</div>
-        <span class="pearl-emoji">🔋</span>
-        <h3>Быстрая подзарядка</h3>
-        <p>3-минутный ритуал восстановления в середине дня — работает лучше дневного сна</p>
-        <span class="pearl-tag">Восстановление</span>
-      </div>
-      <div class="pearl-card fade-up">
-        <div class="pearl-num">06 · Жемчужина</div>
-        <span class="pearl-emoji">🌊</span>
-        <h3>Поток продуктивности</h3>
-        <p>Вход в состояние потока по требованию — максимальный КПД без перегрева</p>
-        <span class="pearl-tag">Продуктивность</span>
-      </div>
-      <div class="pearl-card fade-up">
-        <div class="pearl-num">07 · Жемчужина</div>
+        <div class="pearl-num">Жемчужина 5</div>
         <span class="pearl-emoji">❤️</span>
-        <h3>Гармония отношений</h3>
-        <p>Снятие напряжения в коммуникациях — энергия перестаёт «вытекать» через конфликты</p>
-        <span class="pearl-tag">Отношения</span>
+        <h3>Сердечный резонанс</h3>
+        <p>Гармонизация отношений и эмоционального фона</p>
+        <span class="pearl-tag">Отношения · 5 мин</span>
       </div>
       <div class="pearl-card fade-up">
-        <div class="pearl-num">08 · Жемчужина</div>
+        <div class="pearl-num">Жемчужина 6</div>
+        <span class="pearl-emoji">💰</span>
+        <h3>Поток изобилия</h3>
+        <p>Настройка мышления на рост доходов</p>
+        <span class="pearl-tag">Финансы · 5 мин</span>
+      </div>
+      <div class="pearl-card fade-up">
+        <div class="pearl-num">Жемчужина 7</div>
         <span class="pearl-emoji">🌙</span>
-        <h3>Ночное восстановление</h3>
-        <p>Завершаем день правильно — мозг восстанавливается на 40% эффективнее</p>
-        <span class="pearl-tag">Сон</span>
+        <h3>Глубокое восстановление</h3>
+        <p>Вечерняя практика для качественного сна</p>
+        <span class="pearl-tag">Вечер · 7 мин</span>
+      </div>
+      <div class="pearl-card fade-up">
+        <div class="pearl-num">Жемчужина 8</div>
+        <span class="pearl-emoji">🔮</span>
+        <h3>Интеграция</h3>
+        <p>Объединение всех практик в единую систему</p>
+        <span class="pearl-tag">Синтез · 10 мин</span>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ====== DIVIDER ====== -->
+<div class="divider"><div class="divider-line">✦</div></div>
+
 <!-- ====== METHODOLOGY ====== -->
-<div class="section-wrap" id="method">
+<div class="section-wrap alt" id="method">
   <div class="section-inner">
     <div class="section-header fade-up">
       <div class="section-label">Методика</div>
       <h2 class="section-title">Как работает Super Jump</h2>
-      <p class="section-desc">Научная основа + практический опыт 20+ лет = система, которая работает для каждого</p>
+      <p class="section-desc">Научно обоснованная система ментальных упражнений для управления жизненной энергией</p>
+    </div>
+    <div class="method-cards fade-up">
+      <div class="method-card">
+        <span class="big-icon">🧬</span>
+        <h4>Нейропластичность</h4>
+        <p>Упражнения перестраивают нейронные связи, формируя новые паттерны мышления</p>
+      </div>
+      <div class="method-card">
+        <span class="big-icon">⚡</span>
+        <h4>Энергоёмкость</h4>
+        <p>Каждая практика повышает общий уровень жизненной энергии организма</p>
+      </div>
+      <div class="method-card">
+        <span class="big-icon">🔄</span>
+        <h4>Системность</h4>
+        <p>8 упражнений работают как единый механизм, усиливая друг друга</p>
+      </div>
+      <div class="method-card">
+        <span class="big-icon">⏱️</span>
+        <h4>Скорость</h4>
+        <p>Результаты ощутимы уже на 2-й день практики — это не месяцы ожидания</p>
+      </div>
     </div>
     <div class="method-quote fade-up">
-      «Энергия — это не то, что у вас есть или нет. Это то, что вы умеете или не умеете восстанавливать. Super Jump — это навык, который можно освоить за 10 дней.»
-      <cite>— Ирина Ашихмина, интеллект-тренер Super Jump</cite>
-    </div>
-    <div class="method-cards">
-      <div class="method-card fade-up">
-        <span class="big-icon">🧬</span>
-        <h4>Нейронаука</h4>
-        <p>Упражнения основаны на механизмах нейропластичности и управления стрессовой реакцией мозга</p>
-      </div>
-      <div class="method-card fade-up">
-        <span class="big-icon">⏱️</span>
-        <h4>Минимум времени</h4>
-        <p>5–15 минут в день достаточно для полного курса — никаких многочасовых медитаций</p>
-      </div>
-      <div class="method-card fade-up">
-        <span class="big-icon">📱</span>
-        <h4>Онлайн-формат</h4>
-        <p>Занятия из любой точки мира, в своём темпе, с личной поддержкой тренера</p>
-      </div>
-      <div class="method-card fade-up">
-        <span class="big-icon">🏆</span>
-        <h4>Измеримый результат</h4>
-        <p>Чёткие критерии прогресса — вы видите изменения уже на 2–3 день практики</p>
-      </div>
+      «Энергия — это не роскошь. Это ваша основная валюта. Без неё невозможны ни отношения, ни деньги, ни здоровье. Super Jump возвращает вам эту валюту.»
+      <cite>— Концепция Super Jump</cite>
     </div>
     <div class="who-for fade-up">
-      <h3>Для кого этот интенсив?</h3>
+      <h3>Для кого методика Super Jump</h3>
       <div class="who-grid">
-        <div class="who-item"><div class="who-check">✓</div><span>Предприниматели и руководители, которые работают на износ</span></div>
-        <div class="who-item"><div class="who-check">✓</div><span>Специалисты в состоянии профессионального выгорания</span></div>
-        <div class="who-item"><div class="who-check">✓</div><span>Те, кто чувствует тревогу, апатию или хроническую усталость</span></div>
-        <div class="who-item"><div class="who-check">✓</div><span>Все, кто хочет думать быстрее и достигать большего</span></div>
-        <div class="who-item"><div class="who-check">✓</div><span>Мамы в декрете, которые хотят вернуть себя себе</span></div>
-        <div class="who-item"><div class="who-check">✓</div><span>Все, кому нужен практичный инструмент без воды и эзотерики</span></div>
+        <div class="who-item">
+          <div class="who-check">✓</div>
+          <span>Предприниматели и руководители, работающие на пределе</span>
+        </div>
+        <div class="who-item">
+          <div class="who-check">✓</div>
+          <span>Те, кто чувствует хроническую усталость и выгорание</span>
+        </div>
+        <div class="who-item">
+          <div class="who-check">✓</div>
+          <span>Люди, стремящиеся к росту доходов и карьеры</span>
+        </div>
+        <div class="who-item">
+          <div class="who-check">✓</div>
+          <span>Все, кто хочет управлять своим состоянием осознанно</span>
+        </div>
+        <div class="who-item">
+          <div class="who-check">✓</div>
+          <span>Женщины, совмещающие семью и карьеру</span>
+        </div>
+        <div class="who-item">
+          <div class="who-check">✓</div>
+          <span>Те, кто ищет своё предназначение и смысл</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- DIVIDER -->
-<div class="divider-line"><span style="color:var(--gold);font-size:1.2rem;opacity:0.4;">✦</span></div>
+<!-- ====== DIVIDER ====== -->
+<div class="divider"><div class="divider-line">✦</div></div>
 
 <!-- ====== ADVANTAGES ====== -->
-<div class="section-wrap alt">
+<div class="section-wrap" id="advantages">
   <div class="section-inner">
-    <div class="section-header fade-up" style="text-align:center;">
+    <div class="section-header fade-up">
       <div class="section-label">Преимущества</div>
-      <h2 class="section-title">Почему Super Jump работает</h2>
+      <h2 class="section-title">Почему именно Super Jump</h2>
     </div>
     <div class="adv-grid">
       <div class="adv-card fade-up">
-        <span class="adv-icon">⚡</span>
-        <h3>Быстрый старт</h3>
-        <p>Первые изменения в самочувствии и ясности мышления уже на 1–2 день практики</p>
+        <span class="adv-icon">⏱️</span>
+        <h3>Минимум времени</h3>
+        <p>Всего 30–40 минут в день — упражнения встраиваются в любой график</p>
       </div>
       <div class="adv-card fade-up">
-        <span class="adv-icon">🎯</span>
-        <h3>Системный подход</h3>
-        <p>Не разовый эффект, а встроенная привычка восстановления на всю жизнь</p>
+        <span class="adv-icon">📱</span>
+        <h3>Онлайн-формат</h3>
+        <p>Занимайтесь из любой точки мира — нужен только смартфон</p>
       </div>
       <div class="adv-card fade-up">
-        <span class="adv-icon">🤝</span>
-        <h3>Личная поддержка</h3>
-        <p>Ирина на связи во время всего интенсива — отвечает лично, адаптирует практику под вас</p>
+        <span class="adv-icon">🎓</span>
+        <h3>Сертифицированный тренер</h3>
+        <p>Ирина — дипломированный тренер международной системы Super Jump</p>
       </div>
       <div class="adv-card fade-up">
-        <span class="adv-icon">🌍</span>
-        <h3>Международная система</h3>
-        <p>Super Jump — проверенная методика с результатами в 40+ странах мира</p>
+        <span class="adv-icon">🚀</span>
+        <h3>Быстрый результат</h3>
+        <p>Первые изменения уже на 2-й день — это не теория, а практика</p>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ====== DIVIDER ====== -->
+<div class="divider"><div class="divider-line">✦</div></div>
+
 <!-- ====== ENERGY TEST ====== -->
-<div class="section-wrap" id="test">
+<div class="section-wrap alt" id="test">
   <div class="section-inner">
+    <div class="section-header fade-up">
+      <div class="section-label">Тест энергии</div>
+      <h2 class="section-title">Проверьте уровень вашей энергии</h2>
+    </div>
     <div class="test-layout">
       <div class="test-intro fade-up">
-        <div class="section-label">Тест энергии</div>
-        <h2 class="section-title" style="font-size:clamp(1.6rem,3vw,2.4rem);">Определите уровень<br>своей энергии</h2>
-        <p>Отметьте состояния, которые вы замечаете у себя регулярно — хотя бы несколько раз в неделю. Результат покажет, насколько срочно нужна помощь.</p>
+        <h2 style="font-size:clamp(1.4rem,2.5vw,1.8rem);">Экспресс-диагностика</h2>
+        <p>Отметьте состояния, которые вам знакомы. Чем больше совпадений — тем выше потребность в методике Super Jump.</p>
         <div class="test-progress-wrap">
-          <span style="font-size:0.82rem;color:var(--text-muted);">Отмечено: <strong id="checkedCount" style="color:var(--gold);">0</strong>/8</span>
-          <div class="test-bar-wrap"><div class="test-bar" id="testBar"></div></div>
-          <span id="testPercent" style="font-size:0.82rem;color:var(--gold);font-weight:700;">0%</span>
+          <span style="font-size:0.82rem;color:var(--gold);font-weight:700;">Отмечено: <span id="checkedCount">0</span>/8</span>
+          <div class="test-bar-wrap">
+            <div class="test-bar" id="testBar"></div>
+          </div>
+          <span style="font-size:0.82rem;color:var(--gold);font-weight:700;" id="testPercent">0%</span>
         </div>
         <div class="test-result">
-          <div class="result-label" id="resultLabel">Оценка энергии</div>
-          <div class="result-title" id="resultTitle">Выберите состояния справа</div>
-          <div class="result-text" id="resultText">Отметьте признаки, которые вам откликаются, и получите персональный анализ уровня вашей энергии.</div>
-          <button class="btn-primary" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})" style="width:100%;justify-content:center;font-size:0.85rem;">
-            Хочу восстановить энергию →
-          </button>
+          <div class="test-result-label" id="resultLabel">Оценка энергии</div>
+          <h3 id="resultTitle">Выберите состояния справа</h3>
+          <p id="resultText">Отметьте признаки, которые вам откликаются, и получите персональный анализ уровня вашей энергии.</p>
         </div>
+        <a href="#signup" class="btn-primary" style="margin-top:24px;text-decoration:none;display:inline-flex;">Получить помощь</a>
       </div>
       <div class="fade-up">
-        <div class="test-cards" id="testItems">
+        <div class="test-cards">
           <div class="test-card" onclick="toggleTest(this)">
             <span class="test-emoji">😴</span>
-            <span>Просыпаюсь уже уставшим, даже после 8 часов сна</span>
+            <span>Просыпаюсь уже уставшим, даже после долгого сна</span>
           </div>
           <div class="test-card" onclick="toggleTest(this)">
             <span class="test-emoji">🌀</span>
-            <span>Мысли крутятся по кругу, сложно отключиться</span>
-          </div>
-          <div class="test-card" onclick="toggleTest(this)">
-            <span class="test-emoji">😤</span>
-            <span>Раздражаюсь по мелочам — не то, каким хочу быть</span>
-          </div>
-          <div class="test-card" onclick="toggleTest(this)">
-            <span class="test-emoji">🧊</span>
-            <span>Нет мотивации — всё кажется серым и неинтересным</span>
+            <span>Постоянная тревога и прокрутка мыслей в голове</span>
           </div>
           <div class="test-card" onclick="toggleTest(this)">
             <span class="test-emoji">📉</span>
-            <span>Продуктивность упала: делаю меньше, хотя стараюсь больше</span>
+            <span>Доходы не растут, несмотря на усилия</span>
           </div>
           <div class="test-card" onclick="toggleTest(this)">
-            <span class="test-emoji">😰</span>
-            <span>Тревога и беспокойство без явной причины</span>
+            <span class="test-emoji">😤</span>
+            <span>Раздражительность и эмоциональные срывы</span>
           </div>
           <div class="test-card" onclick="toggleTest(this)">
-            <span class="test-emoji">🫶</span>
-            <span>Не хватает сил на близких — общение стало обязанностью</span>
+            <span class="test-emoji">🔋</span>
+            <span>К вечеру чувствую себя полностью опустошённым</span>
           </div>
           <div class="test-card" onclick="toggleTest(this)">
-            <span class="test-emoji">💸</span>
-            <span>Доходы стоят на месте — нет энергии двигаться вперёд</span>
+            <span class="test-emoji">🎭</span>
+            <span>Потерял(а) интерес к тому, что раньше вдохновляло</span>
+          </div>
+          <div class="test-card" onclick="toggleTest(this)">
+            <span class="test-emoji">🤯</span>
+            <span>Сложно сосредоточиться, мысли разбегаются</span>
+          </div>
+          <div class="test-card" onclick="toggleTest(this)">
+            <span class="test-emoji">💔</span>
+            <span>Отношения страдают из-за нехватки сил и терпения</span>
           </div>
         </div>
       </div>
@@ -1995,121 +1865,68 @@
   </div>
 </div>
 
+<!-- ====== DIVIDER ====== -->
+<div class="divider"><div class="divider-line">✦</div></div>
+
 <!-- ====== FORMATS ====== -->
-<div class="section-wrap alt" id="formats">
+<div class="section-wrap" id="formats">
   <div class="section-inner">
     <div class="section-header fade-up">
       <div class="section-label">Форматы</div>
-      <h2 class="section-title">Выберите свой формат</h2>
-      <p class="section-desc">Два пути к результату — подберите тот, что подходит под ваш ритм жизни</p>
+      <h2 class="section-title">Выберите подходящий формат</h2>
     </div>
     <div class="formats-grid">
-      <div class="format-card" id="fmt-1" onclick="selectFormat(1)">
-        <span class="format-icon">🚀</span>
-        <h3>10-дневный интенсив</h3>
-        <p>Погружение в методику с нуля до уверенной практики. Живые эфиры, обратная связь, поддержка группы.</p>
-        <ul class="format-features">
-          <li>10 онлайн-занятий с Ириной</li>
-          <li>Личная обратная связь</li>
-          <li>Закрытый чат участников</li>
-          <li>Записи всех занятий навсегда</li>
-          <li>Сертификат участника</li>
-        </ul>
+      <div class="format-card fade-up" id="fmt-1" onclick="selectFormat(1)">
+        <span class="format-icon">🌱</span>
+        <h3>Базовый интенсив</h3>
+        <p>10 дней онлайн-практики с пошаговыми инструкциями. Идеально для старта.</p>
       </div>
-      <div class="format-card popular" id="fmt-2" onclick="selectFormat(2)">
-        <span class="format-icon">💎</span>
-        <h3>VIP-сопровождение</h3>
-        <p>Индивидуальная работа с Ириной. Адаптация под ваши задачи, цели и ритм жизни.</p>
-        <ul class="format-features">
-          <li>Персональный план работы</li>
-          <li>Прямой доступ к Ирине</li>
-          <li>Разбор вашей ситуации</li>
-          <li>Гибкий график занятий</li>
-          <li>Результат под гарантию</li>
-        </ul>
+      <div class="format-card fade-up active" id="fmt-2" onclick="selectFormat(2)">
+        <span class="format-icon">⭐</span>
+        <h3>Продвинутый курс</h3>
+        <p>Углублённая работа с тренером, индивидуальный план и личные разборы.</p>
       </div>
-    </div>
-    <div style="text-align:center;margin-top:40px;" class="fade-up">
-      <p style="color:var(--text-muted);margin-bottom:20px;font-size:0.92rem;">Даты ближайших потоков и стоимость — уточняйте напрямую. Места строго ограничены.</p>
-      <a href="https://t.me/Irina_Ashikhmina" target="_blank" class="btn-primary" style="display:inline-flex;text-decoration:none;">
-        Узнать стоимость и дату старта
-      </a>
-    </div>
-  </div>
-</div>
-
-<!-- ====== AUDIOBOOK ====== -->
-<div class="section-wrap" id="audiobook">
-  <div class="section-inner">
-    <div class="audiobook-layout">
-      <div class="audiobook-cover fade-up">
-        <div class="section-label">Аудиокнига</div>
-        <h2>«Энергия важнее<br>времени и денег»</h2>
-        <div class="audiobook-meta">Методика Super Jump · Ирина Ашихмина</div>
-        <p class="audiobook-desc">Аудиокнига раскрывает главный секрет: почему одни люди успевают всё и горят от жизни, а другие — вечно в усталости, даже когда есть деньги и время. Ответ в энергии. Слушайте прямо сейчас — бесплатно на YouTube.</p>
-        <ul class="audiobook-features">
-          <li>Узнайте, почему энергия — главный ресурс</li>
-          <li>Откройте 8 источников жизненной силы</li>
-          <li>Получите первые практики уже во время прослушивания</li>
-        </ul>
-        <a href="https://www.youtube.com/watch?v=HRk7RjpyKUg" target="_blank" class="btn-primary" style="display:inline-flex;text-decoration:none;">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#0e0e0e;flex-shrink:0"><path d="M8 5v14l11-7z"/></svg>
-          Слушать аудиокнигу
-        </a>
-      </div>
-      <div class="audiobook-photo-wrap fade-up">
-        <img src="img/2.jpg" alt="Ирина Ашихмина" class="audiobook-photo">
-        <div class="audiobook-photo-badge">Ирина Ашихмина</div>
+      <div class="format-card fade-up" id="fmt-3" onclick="selectFormat(3)">
+        <span class="format-icon">🎓</span>
+        <h3>Стать тренером</h3>
+        <p>Обучение и сертификация. Освойте методику и помогайте другим.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ====== RESULTS / REVIEWS ====== -->
+<!-- ====== DIVIDER ====== -->
+<div class="divider"><div class="divider-line">✦</div></div>
+
+<!-- ====== RESULTS ====== -->
 <div class="section-wrap alt" id="results">
   <div class="section-inner">
     <div class="section-header fade-up">
-      <div class="section-label">Отзывы</div>
-      <h2 class="section-title">Результаты учеников</h2>
-      <p class="section-desc">Реальные истории людей, которые прошли интенсив Super Jump</p>
+      <div class="section-label">Результаты</div>
+      <h2 class="section-title">Что говорят участники</h2>
     </div>
-    <div class="reviews-grid">
-      <div class="review-card fade-up">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">«После первых 3 дней я перестала ставить 5 будильников. Просто начала высыпаться — это казалось невозможным после 4 лет хронической усталости.»</p>
-        <div class="review-author">
-          <div class="review-av">МК</div>
-          <div>
-            <div class="review-name">Мария К.</div>
-            <div class="review-role">Руководитель отдела, Москва</div>
-          </div>
-        </div>
+    <div class="results-grid">
+      <div class="result-card fade-up">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p>«После 10 дней практики я стала просыпаться с энергией, которой не было годами. Это действительно работает!»</p>
+        <span class="author">Анна, 34 года · предприниматель</span>
       </div>
-      <div class="review-card fade-up">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">«Я скептически относился к подобным методикам. Но уже на 5-й день заметил: тревога ушла, голова стала чистой. Доход за месяц вырос на 40%.»</p>
-        <div class="review-author">
-          <div class="review-av">АП</div>
-          <div>
-            <div class="review-name">Алексей П.</div>
-            <div class="review-role">Предприниматель, Екатеринбург</div>
-          </div>
-        </div>
+      <div class="result-card fade-up">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p>«Доход вырос на 40% за 3 месяца. Когда есть энергия — всё получается легче и быстрее.»</p>
+        <span class="author">Михаил, 42 года · руководитель</span>
       </div>
-      <div class="review-card fade-up">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">«Ирина — это профессионал с большой буквы. Она понимает, как работает мозг, и объясняет это так, что хочется практиковать снова и снова.»</p>
-        <div class="review-author">
-          <div class="review-av">ЕВ</div>
-          <div>
-            <div class="review-name">Елена В.</div>
-            <div class="review-role">Психолог, Санкт-Петербург</div>
-          </div>
-        </div>
+      <div class="result-card fade-up">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p>«Тревожность ушла уже на 3-й день. Я перестала крутить негатив в голове и начала жить.»</p>
+        <span class="author">Елена, 38 лет · мама и бизнесвумен</span>
       </div>
     </div>
   </div>
 </div>
+
+<!-- ====== DIVIDER ====== -->
+<div class="divider"><div class="divider-line">✦</div></div>
 
 <!-- ====== CERTIFICATES ====== -->
 <div class="section-wrap" id="certs">
@@ -2120,28 +1937,16 @@
       <p class="section-desc">Сертификаты международной системы Super Jump и смежных дисциплин</p>
     </div>
     <div class="certs-grid">
-      <div class="cert-card fade-up" onclick="openCert('img/cert1.jpg')">
-        <img src="img/cert1.jpg" alt="Сертификат 1" class="cert-img" onerror="this.parentElement.style.display='none'">
+      <div class="cert-card fade-up" onclick="openCert('img/cert.jpg')">
+        <img src="img/cert.jpg" alt="Сертификат" class="cert-img">
         <div class="cert-label">Сертификат Super Jump</div>
-      </div>
-      <div class="cert-card fade-up" onclick="openCert('img/cert2.jpg')">
-        <img src="img/cert2.jpg" alt="Сертификат 2" class="cert-img" onerror="this.parentElement.style.display='none'">
-        <div class="cert-label">Интеллект-тренер</div>
-      </div>
-      <div class="cert-card fade-up" onclick="openCert('img/cert3.jpg')">
-        <img src="img/cert3.jpg" alt="Сертификат 3" class="cert-img" onerror="this.parentElement.style.display='none'">
-        <div class="cert-label">Международный уровень</div>
-      </div>
-      <div class="cert-card fade-up" onclick="openCert('img/cert4.jpg')">
-        <img src="img/cert4.jpg" alt="Сертификат 4" class="cert-img" onerror="this.parentElement.style.display='none'">
-        <div class="cert-label">Дополнительная квалификация</div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ====== SIGNUP FORM ====== -->
-<div class="section-wrap alt" id="signup">
+<div class="section-wrap" id="signup">
   <div class="section-inner">
     <div class="section-header fade-up" style="text-align:center;margin-bottom:40px;">
       <div class="section-label">Начните прямо сейчас</div>
@@ -2174,11 +1979,16 @@
         </button>
         <p style="font-size:0.78rem;color:var(--text-muted);margin-top:14px;text-align:center;line-height:1.6;">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
       </div>
-      <!-- RIGHT: аудиокнига -->
+      <!-- RIGHT: аудиокнига с картинкой книги -->
       <div class="signup-info fade-up">
-        <div class="section-label">Аудиокнига</div>
-        <h2 class="section-title" style="font-size:clamp(1.4rem,2.5vw,2rem);">«Энергия важнее<br>времени и денег»</h2>
-        <div style="font-size:0.88rem;color:var(--gold);font-weight:600;margin-bottom:16px;">Методика Super Jump · Ирина Ашихмина</div>
+        <div class="signup-info-inner" style="display:flex;gap:24px;align-items:flex-start;margin-bottom:24px;">
+          <img src="img/book.jpg" alt="Книга «Энергия важнее времени и денег»" class="book-img" style="width:180px;border-radius:14px;flex-shrink:0;box-shadow:0 12px 40px rgba(0,0,0,0.5);object-fit:cover;">
+          <div>
+            <div class="section-label">Аудиокнига</div>
+            <h2 class="section-title" style="font-size:clamp(1.4rem,2.5vw,2rem);">«Энергия важнее<br>времени и денег»</h2>
+            <div style="font-size:0.88rem;color:var(--gold);font-weight:600;margin-bottom:16px;">Методика Super Jump · Ирина Ашихмина</div>
+          </div>
+        </div>
         <p style="color:var(--text-muted);line-height:1.8;margin-bottom:24px;">Аудиокнига раскрывает главный секрет: почему одни люди успевают всё и горят от жизни, а другие — вечно в усталости, даже когда есть деньги и время. Ответ в энергии. Слушайте прямо сейчас — бесплатно на YouTube.</p>
         <a href="https://www.youtube.com/watch?v=HRk7RjpyKUg" target="_blank" class="btn-primary" style="display:inline-flex;text-decoration:none;margin-bottom:32px;">
           <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#0e0e0e;flex-shrink:0"><path d="M8 5v14l11-7z"/></svg>
@@ -2208,7 +2018,7 @@
 </div>
 
 <!-- ====== CTA ====== -->
-<div class="section-wrap" id="cta">
+<div class="section-wrap alt" id="cta">
   <div class="cta-section">
     <div class="section-label" style="margin-bottom:20px;">Трансформация ждёт</div>
     <h2 class="section-title fade-up">Ваша энергия — это не роскошь.<br>Это ваша основная валюта.</h2>
@@ -2226,7 +2036,7 @@
 </div>
 
 <!-- ====== CONTACTS ====== -->
-<div class="section-wrap alt" id="contacts">
+<div class="section-wrap" id="contacts">
   <div class="section-inner">
     <div class="section-header fade-up">
       <div class="section-label">Контакты</div>
@@ -2293,7 +2103,7 @@
             <li><a href="#results">Результаты</a></li>
             <li><a href="#certs">Сертификаты</a></li>
             <li><a href="#formats">Форматы</a></li>
-            <li><a href="#audiobook">Аудиокнига</a></li>
+            <li><a href="#signup">Аудиокнига</a></li>
             <li><a href="#test">Тест энергии</a></li>
           </ul>
         </div>
@@ -2328,7 +2138,7 @@
 </footer>
 
 <!-- ====== BACK TO TOP ====== -->
-<div id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+<div id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</div>
 
 <!-- ====== NOTIFICATION ====== -->
 <div class="notif" id="notif">
@@ -2341,7 +2151,7 @@
   <div class="modal-inner">
     <div class="modal-close" onclick="closeVideo()">✕</div>
     <div class="modal-video">
-      <iframe id="modalIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <iframe id="modalIframe" src="" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
     </div>
   </div>
 </div>
@@ -2355,18 +2165,29 @@
 </div>
 
 <script>
-  // ====== NAVBAR SCROLL ======
-  window.addEventListener('scroll', () => {
-    const nav = document.getElementById('navbar');
-    const backTop = document.getElementById('backTop');
-    if (window.scrollY > 80) {
-      nav.classList.add('scrolled');
-      backTop.classList.add('visible');
-    } else {
-      nav.classList.remove('scrolled');
-      backTop.classList.remove('visible');
+  // ====== NAVBAR SCROLL (throttled + passive) ======
+  let lastScrollY = 0;
+  let ticking = false;
+  const nav = document.getElementById('navbar');
+  const backTop = document.getElementById('backTop');
+
+  function onScroll() {
+    lastScrollY = window.scrollY;
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        if (lastScrollY > 80) {
+          nav.classList.add('scrolled');
+          backTop.classList.add('visible');
+        } else {
+          nav.classList.remove('scrolled');
+          backTop.classList.remove('visible');
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
-  });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   // ====== MOBILE MENU ======
   function toggleMobile() {
@@ -2398,7 +2219,11 @@
     if (e.target === document.getElementById('videoModal')) closeVideo();
   }
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeVideo(); document.getElementById('certModal').style.display='none'; }
+    if (e.key === 'Escape') {
+      closeVideo();
+      document.getElementById('certModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
   });
 
   // ====== CERT MODAL ======
@@ -2491,40 +2316,50 @@
     setTimeout(() => n.classList.remove('show'), 4000);
   }
 
-  // ====== FADE-IN ON SCROLL ======
+  // ====== FADE-IN ON SCROLL (одиночный observer с rootMargin) ======
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // отписываемся после срабатывания
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-  // ====== COUNTER ANIMATION ======
-  function animateCounter(el, target, suffix) {
-    let current = 0;
-    const step = target / 60;
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= target) {
-        current = target;
-        clearInterval(timer);
-      }
-      el.textContent = Math.round(current) + suffix;
-    }, 20);
+  // ====== COUNTER ANIMATION (requestAnimationFrame вместо setInterval) ======
+  function animateCounter(el, target, suffix, duration) {
+    const start = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // easeOutQuad
+      const eased = 1 - (1 - progress) * (1 - progress);
+      el.textContent = Math.round(eased * target) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
+
   const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const nums = entry.target.querySelectorAll('.stat-number');
-        const targets = [500, 20, 10, 100];
-        const suffixes = ['+', '+', '', '%'];
-        nums.forEach((num, i) => animateCounter(num, targets[i], suffixes[i]));
+        const data = [
+          { id: 'stat0', target: 500, suffix: '+', dur: 1200 },
+          { id: 'stat1', target: 20,  suffix: '+', dur: 900  },
+          { id: 'stat2', target: 10,  suffix: '',  dur: 700  },
+          { id: 'stat3', target: 100, suffix: '%', dur: 1000 },
+        ];
+        data.forEach(d => {
+          const el = document.getElementById(d.id);
+          if (el) animateCounter(el, d.target, d.suffix, d.dur);
+        });
         statsObserver.unobserve(entry.target);
       }
     });
   }, { threshold: 0.3 });
+
   const strip = document.querySelector('.stats-strip');
   if (strip) statsObserver.observe(strip);
 </script>
